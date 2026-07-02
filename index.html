@@ -74,6 +74,52 @@
     }
     .nav-links a:hover { color: var(--text); text-decoration: none; }
 
+    /* ── Mobile nav toggle ── */
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+    .nav-toggle span,
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      display: block;
+      width: 16px;
+      height: 2px;
+      background: var(--text);
+      position: relative;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .nav-toggle span::before,
+    .nav-toggle span::after { content: ''; position: absolute; left: 0; }
+    .nav-toggle span::before { top: -5px; }
+    .nav-toggle span::after { top: 5px; }
+    .nav-toggle[aria-expanded="true"] span { background: transparent; }
+    .nav-toggle[aria-expanded="true"] span::before { transform: translateY(5px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] span::after { transform: translateY(-5px) rotate(-45deg); }
+
+    .nav-mobile-panel {
+      display: none;
+      flex-direction: column;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .nav-mobile-panel.open { display: flex; }
+    .nav-mobile-panel a {
+      padding: 14px 24px;
+      font-size: 14px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    .nav-mobile-panel a:hover, .nav-mobile-panel a:active { color: var(--accent); text-decoration: none; }
+
     /* ── Hero ── */
     .hero {
       padding: 96px 0 80px;
@@ -350,6 +396,19 @@
       .about-grid, .contact-grid { grid-template-columns: 1fr; }
       .about-stats { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+
+      .hero { padding: 56px 0 48px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn { justify-content: center; }
+
+      section { padding: 48px 0; }
+      .section-title { font-size: 1.4rem; margin-bottom: 28px; }
+
+      .terminal-body { padding: 16px; font-size: 12px; line-height: 1.7; overflow-x: auto; white-space: pre; }
+
+      .project-card { padding: 20px; }
+      .project-top { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
   </style>
 </head>
@@ -366,8 +425,40 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMobilePanel">
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile-panel" id="navMobilePanel">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
     </div>
   </nav>
+
+  <script>
+    (function () {
+      var toggle = document.getElementById('navToggle');
+      var panel = document.getElementById('navMobilePanel');
+      if (!toggle || !panel) return;
+
+      function closeMenu() {
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      function toggleMenu() {
+        var isOpen = panel.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      }
+
+      toggle.addEventListener('click', toggleMenu);
+      panel.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeMenu);
+      });
+    })();
+  </script>
 
   <!-- Hero -->
   <section class="hero">
