@@ -395,7 +395,40 @@
     <div>Designed & built by Johara Alfad · 2026</div>
   </footer>
 
+  <!-- Spidey AI Assistant -->
+  <div id="spidey-widget">
+    <button id="spideyToggle" aria-label="Chat with Spidey, the site assistant" aria-expanded="false">
+      <img class="spidey-toggle-image" src="images/spidey.png" alt="Spider Man">
+      <span class="spidey-ping"></span>
+    </button>
+
+    <div id="spideyPanel" role="dialog" aria-modal="false" aria-labelledby="spideyTitle">
+      <div class="spidey-header">
+        <div class="spidey-header-info">
+          <span class="spidey-avatar">🕷️</span>
+          <div>
+            <div id="spideyTitle" class="spidey-name">Spidey</div>
+            <div class="spidey-status"><span class="dot-online"></span>Online</div>
+          </div>
+        </div>
+        <div class="spidey-header-actions">
+          <button id="spideyMute" aria-label="Mute Spidey's voice" aria-pressed="false">🔊</button>
+          <button id="spideyClose" aria-label="Close chat">✕</button>
+        </div>
+      </div>
+      <div id="spideyMessages" class="spidey-messages"></div>
+      <div id="spideyTyping" class="spidey-typing" hidden>
+        <span></span><span></span><span></span>
+      </div>
+      <form id="spideyForm" class="spidey-form">
+        <input id="spideyInput" type="text" placeholder="Ask about Johara's projects..." autocomplete="off" maxlength="300" />
+        <button type="submit" aria-label="Send">➤</button>
+      </form>
+    </div>
+  </div>
+
  <script src="script.js"></script>
+ <script src="spiderman.js"></script>
 
 </body>
 </html>
