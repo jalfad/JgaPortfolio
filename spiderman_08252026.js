@@ -64,21 +64,10 @@
   }
 
   // Some mobile browsers block speech that isn't triggered by a real user
-  // gesture (a setTimeout-based auto-open doesn't count) — this is
-  // especially strict on iOS Safari. To handle that, we also listen for
-  // the very first tap/click ANYWHERE on the page and use that gesture to
-  // unlock + speak the welcome line directly, instead of relying only on
-  // the chat toggle button.
+  // gesture (a setTimeout-based auto-open doesn't count). If the welcome
+  // line never actually starts, retry it the next time the user taps the
+  // toggle themselves.
   var welcomeSpoken = false;
-
-  function primeAndSpeakWelcome() {
-    if (welcomeSpoken || muted || !synth) return;
-    speak(WELCOME, function () { welcomeSpoken = true; });
-  }
-
-  ['touchend', 'click', 'keydown'].forEach(function (evt) {
-    document.addEventListener(evt, primeAndSpeakWelcome, { once: true, passive: true });
-  });
 
   // Conversation sent to the API (kept short + capped server-side too).
   var history = [];
@@ -111,7 +100,7 @@
       addMessage('assistant', WELCOME);
     }
     if (!welcomeSpoken) {
-      primeAndSpeakWelcome();
+      speak(WELCOME, function () { welcomeSpoken = true; });
     }
     input.focus();
   }
